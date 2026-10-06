@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Pedidos de agendamento · Pricila Zibell</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin">
+  <header class="admin-header">
+    <div class="container admin-header-inner">
+      <a class="brand" href="/">
+        <img src="img/favicon.svg" alt="" width="40" height="40" class="brand-mark">
+        <span class="brand-text"><span class="brand-name">Pricila Zibell</span><span class="brand-sub">Pedidos do site</span></span>
+      </a>
+      <button class="btn btn-ghost btn-sm" type="button" data-sair hidden>Sair</button>
+    </div>
+  </header>
+
+  <main class="container admin-main">
+    <form class="login-card" data-login>
+      <h1>Painel de agendamentos</h1>
+      <p>Digite o token de acesso definido no servidor (variável <code>ADMIN_TOKEN</code>).</p>
+      <label for="token">Token de acesso</label>
+      <input id="token" name="token" type="password" autocomplete="current-password" required>
+      <button class="btn btn-primary btn-block" type="submit">Entrar</button>
+      <p class="form-error" data-login-erro hidden></p>
+    </form>
+
+    <section data-painel hidden>
+      <div class="admin-top">
+        <div>
+          <h1>Pedidos de agendamento</h1>
+          <p class="admin-sub" data-resumo></p>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost btn-sm" type="button" data-atualizar>Atualizar</button>
+          <button class="btn btn-primary btn-sm" type="button" data-csv>Exportar CSV</button>
+        </div>
+      </div>
+
+      <div class="stats" data-stats></div>
+
+      <div class="filters" role="tablist" aria-label="Filtrar por status" data-filtros>
+        <button type="button" class="chip is-active" data-filtro="">Todos</button>
+        <button type="button" class="chip" data-filtro="novo">Novos</button>
+        <button type="button" class="chip" data-filtro="contatado">Contatados</button>
+        <button type="button" class="chip" data-filtro="agendado">Agendados</button>
+        <button type="button" class="chip" data-filtro="perdido">Perdidos</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="leads">
+          <thead>
+            <tr><th>Recebido</th><th>Paciente</th><th>Interesse</th><th>Mensagem</th><th>Origem</th><th>Status</th></tr>
+          </thead>
+          <tbody data-tabela></tbody>
+        </table>
+        <p class="empty" data-vazio hidden>Nenhum pedido por aqui ainda.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/admin.js" defer></script>
+</body>
+</html>
