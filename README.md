@@ -12,7 +12,10 @@ O caminho principal é o WhatsApp, com o telefone e as rotas como apoio.
 | `public/js/main.js` | Links de WhatsApp por tratamento, "aberto agora", formulário, rastreamento |
 | `public/admin.html` | Painel de pedidos de agendamento (`/admin`) |
 | `public/privacidade.html` | Política de Privacidade (LGPD) |
-| `server.js` | Servidor Node sem dependências: arquivos, API de agendamento e painel |
+| `api/` | Funções da Vercel (agendamento, painel e verificação de saúde) |
+| `lib/` | Regras da API e cabeçalhos de segurança, usados pela Vercel e pelo servidor próprio |
+| `vercel.json` | Configuração da Vercel (gerada por `npm run vercel-json`) |
+| `servidor.js` | Servidor Node próprio, para hospedar fora da Vercel |
 | `test/` | Testes da API (`npm test`) |
 
 ## Como o site converte
@@ -56,20 +59,42 @@ O caminho principal é o WhatsApp, com o telefone e as rotas como apoio.
 cd clinica-drapricilazibell
 cp .env.example .env        # defina ADMIN_TOKEN
 npm start                   # http://localhost:3000
-npm test                    # testes da API
+npm test                    # testes da API e da configuração da Vercel
 ```
 
 Precisa só do Node.js 18 ou mais novo. Não há `npm install`.
 
-## Publicar
+## Publicar na Vercel
 
-**Com o servidor (recomendado)**: Render, Railway, Fly.io, uma VPS ou a
-Hostinger com Node. Comando de início `npm start`, variáveis do `.env.example`
-e um disco persistente apontado em `DATA_DIR` para os pedidos não sumirem a
-cada deploy. Atrás de Cloudflare ou outro proxy, use `TRUST_PROXY=1`.
+O `vercel.json` já faz tudo: as páginas de `public/` saem pela CDN e o
+formulário usa as funções de `api/`. Não é preciso mudar nada no painel; o
+arquivo sobrepõe o preset escolhido na importação.
 
-**Só estático** (Netlify, Vercel, GitHub Pages, hospedagem comum): publique a
-pasta `public/` e deixe `api: ''` no `config.js`. O formulário passa a abrir o
+> Não crie um arquivo chamado `server.js` na raiz: a Vercel o detecta como
+> servidor Node, manda todas as rotas para ele e o site cai com
+> `500 FUNCTION_INVOCATION_FAILED`. Por isso o servidor próprio se chama
+> `servidor.js` (e há um teste que garante isso).
+
+1. **Settings → Environment Variables**: crie `ADMIN_TOKEN` (senha longa do
+   painel) e, se quiser, `LEAD_WEBHOOK_URL`. O `WHATSAPP_NUMBER` só é
+   necessário se for diferente de 554832429297.
+2. **Storage → Upstash (Redis) → Connect**: o banco gratuito basta. A Vercel
+   cria `KV_REST_API_URL` e `KV_REST_API_TOKEN` sozinha e os pedidos passam a
+   aparecer em `/admin`. Sem ele o site funciona normalmente: o formulário
+   abre o WhatsApp, mas os pedidos não ficam guardados no painel.
+3. Faça um novo deploy (ou envie um commit) para as variáveis valerem.
+
+Mudou algum `<script>` inline dos HTML? Rode `npm run vercel-json` e faça
+commit do `vercel.json`, senão a CSP bloqueia o script (o teste avisa).
+
+## Publicar em servidor próprio
+
+Render, Railway, Fly.io, VPS ou Hostinger com Node: comando de início
+`npm start`, variáveis do `.env.example` e um disco persistente apontado em
+`DATA_DIR`. Atrás de Cloudflare ou outro proxy, use `TRUST_PROXY=1`.
+
+**Só estático** (Netlify, GitHub Pages, hospedagem comum): publique a pasta
+`public/` e deixe `api: ''` no `config.js`. O formulário passa a abrir o
 WhatsApp direto, sem gravar no painel.
 
 ## Painel de pedidos

@@ -11,7 +11,7 @@ process.env.DATA_DIR = dataDir;
 process.env.ADMIN_TOKEN = 'token-de-teste';
 process.env.LEAD_WEBHOOK_URL = '';
 
-const { servidor } = require('../server');
+const { servidor } = require('../servidor');
 let base;
 
 before(async () => {
