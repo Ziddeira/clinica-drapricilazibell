@@ -24,6 +24,7 @@
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="preload" href="fonts/montserrat.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/cormorant-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="img/hero-sorriso.webp" as="image" type="image/webp" fetchpriority="high">
   <link rel="stylesheet" href="css/style.css">
   <script>document.documentElement.classList.add('js');setTimeout(function(){if(!window.__pzReady)document.documentElement.classList.remove('js')},4000)</script>
 
@@ -174,8 +175,10 @@
 
         <div class="hero-visual reveal" aria-hidden="true">
           <div class="arch">
-            <img src="img/logo.png" alt="" width="485" height="209" class="arch-logo">
-            <p class="arch-caption">Dra. Pricila C. Zibell<br><span>Cirurgiã-dentista</span></p>
+            <picture>
+              <source srcset="img/hero-sorriso.webp" type="image/webp">
+              <img src="img/hero-sorriso.jpg" alt="" width="418" height="626" class="arch-img" fetchpriority="high">
+            </picture>
           </div>
           <div class="float-card fc-1">
             <span class="fc-icon"><svg class="icon"><use href="#i-google"/></svg></span>
